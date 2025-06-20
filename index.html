@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NATO組織構造・意思決定体系図</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        body {
+            font-family: 'Meiryo', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-size: 9px;
+            line-height: 1.2;
+            color: #333;
+        }
+        
+        .container {
+            width: 180mm;
+            height: 257mm;
+            margin: 0 auto;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #2c5aa0;
+        }
+        
+        .header h1 {
+            color: #2c5aa0;
+            font-size: 14px;
+            margin: 0 0 3px 0;
+            font-weight: bold;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 7px;
+            margin: 1px 0;
+        }
+        
+        .org-chart {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 6px;
+        }
+        
+        .level {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 2px 0;
+        }
+        
+        .org-box {
+            background: white;
+            border: 2px solid;
+            border-radius: 5px;
+            padding: 5px 3px;
+            text-align: center;
+            font-size: 8px;
+            position: relative;
+            min-height: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* 加盟国レベル */
+        .level-member .org-box {
+            border-color: #2c5aa0;
+            background: #e8f0ff;
+            width: 100px;
+            min-height: 30px;
+        }
+        
+        /* 理事会レベル（同格） */
+        .level-councils .org-box {
+            border-color: #e74c3c;
+            background: #fef5f5;
+            width: 90px;
+            min-height: 32px;
+        }
+        
+        /* 執行機関レベル */
+        .level-exec .org-box {
+            border-color: #f39c12;
+            background: #fffaf0;
+            width: 80px;
+            min-height: 28px;
+        }
+        
+        /* 事務支援レベル */
+        .level-support .org-box {
+            border-color: #3498db;
+            background: #f0f8ff;
+            width: 70px;
+            min-height: 26px;
+        }
+        
+        /* 委員会レベル */
+        .level-committees .org-box {
+            border-color: #27ae60;
+            background: #f0fff0;
+            width: 65px;
+            min-height: 24px;
+        }
+        
+        /* 司令部レベル */
+        .level-commands .org-box {
+            border-color: #9b59b6;
+            background: #f8f0ff;
+            width: 70px;
+            min-height: 26px;
+        }
+        
+        .org-box h3 {
+            font-size: 8px;
+            font-weight: bold;
+            margin: 0 0 1px 0;
+            line-height: 1.1;
+            color: #2c5aa0;
+        }
+        
+        .org-box .acronym {
+            font-size: 7px;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 1px;
+        }
+        
+        .org-box .details {
+            font-size: 6px;
+            color: #666;
+            line-height: 1.2;
+        }
+        
+        .connection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1px 0;
+        }
+        
+        .v-line {
+            width: 2px;
+            height: 5px;
+            background: #2c5aa0;
+        }
+        
+        .direct-connections {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            margin: 3px 0;
+        }
+        
+        .direct-line {
+            position: absolute;
+            width: 3px;
+            height: 35px;
+            background: #e74c3c;
+            top: 0;
+        }
+        
+        .line-nac-sg {
+            left: 13%;
+            transform: rotate(35deg);
+            transform-origin: top center;
+        }
+        
+        .line-mc-chair {
+            right: 8%;
+            transform: rotate(-35deg);
+            transform-origin: top center;
+        }
+        
+        .parallel-structure {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .multi-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            justify-items: center;
+            max-width: 100%;
+        }
+        
+        .wide-multi-column {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            justify-items: center;
+            max-width: 100%;
+        }
+        
+        .chair-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 3px;
+            padding: 3px;
+            margin-top: 2px;
+            font-size: 6px;
+            color: #856404;
+            text-align: center;
+        }
+        
+        .consensus-box {
+            background: #f0f3ff;
+            border: 1px solid #2c5aa0;
+            border-radius: 4px;
+            padding: 4px;
+            margin-top: 5px;
+            text-align: center;
+            font-size: 6px;
+        }
+        
+        .consensus-box h4 {
+            color: #2c5aa0;
+            font-size: 7px;
+            margin: 0 0 1px 0;
+            font-weight: bold;
+        }
+        
+        .consensus-box p {
+            margin: 1px 0;
+            line-height: 1.3;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 3px;
+            font-size: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        .legend-color {
+            width: 5px;
+            height: 5px;
+            border: 1px solid;
+            border-radius: 1px;
+        }
+        
+        .member-color { border-color: #2c5aa0; background: #e8f0ff; }
+        .councils-color { border-color: #e74c3c; background: #fef5f5; }
+        .exec-color { border-color: #f39c12; background: #fffaf0; }
+        .support-color { border-color: #3498db; background: #f0f8ff; }
+        .committees-color { border-color: #27ae60; background: #f0fff0; }
+        .commands-color { border-color: #9b59b6; background: #f8f0ff; }
+        
+        @media print {
+            body { font-size: 7px; }
+            .container { 
+                width: 100%; 
+                height: auto; 
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>NATO組織構造・意思決定体系図</h1>
+            <div class="subtitle">North Atlantic Treaty Organization - Decision-Making Structure</div>
+            <div class="subtitle">32加盟国 | コンセンサス原則 | 2025年6月更新</div>
+        </div>
+        
+        <div class="org-chart">
+            <!-- Level 1: 加盟国 -->
+            <div class="level level-member">
+                <div class="org-box">
+                    <h3>加盟国</h3>
+                    <div class="details">32カ国<br>(欧州30・北米2)<br>主権維持</div>
+                </div>
+            </div>
+            
+            <div class="connection"><div class="v-line"></div></div>
+            
+            <!-- Level 2: 最高政治機関 -->
+            <div class="level level-councils">
+                <div class="org-box">
+                    <h3>北大西洋理事会</h3>
+                    <div class="acronym">NAC</div>
+                    <div class="details">最高政治決定機関<br>唯一の条約機関</div>
+                </div>
+                <div class="org-box">
+                    <h3>核計画グループ</h3>
+                    <div class="acronym">NPG</div>
+                    <div class="details">核政策<br>NACと同等権限</div>
+                </div>
+            </div>
+            
+            <div class="connection"><div class="v-line"></div></div>
+            
+            <!-- Level 2.5: 軍事助言機関（斜め下） -->
+            <div style="display: flex; justify-content: flex-end; margin-right: 60px;">
+                <div class="level level-councils">
+                    <div class="org-box">
+                        <h3>軍事委員会</h3>
+                        <div class="acronym">MC</div>
+                        <div class="details">最高軍事助言機関<br>NAC・NPGへ助言<br>独立した委員長</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 直接線の表示 -->
+            <div class="direct-connections">
+                <div class="direct-line line-nac-sg"></div>
+                <div class="direct-line line-mc-chair"></div>
+            </div>
+            
+            <!-- Level 3: 並列構造 -->
+            <div class="parallel-structure">
+                <!-- 文民系統 -->
+                <div class="branch">
+                    <div class="level level-exec">
+                        <div class="org-box">
+                            <h3>事務総長</h3>
+                            <div class="details">Mark Rutte<br>(2024.10就任)<br>NAC・NPG議長</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chair-note">
+                        事務総長がNAC・NPG・各種委員会の議長
+                    </div>
+                    
+                    <div class="connection"><div class="v-line"></div></div>
+                    
+                    <div class="level level-support">
+                        <div class="org-box">
+                            <h3>国際事務局</h3>
+                            <div class="acronym">IS</div>
+                            <div class="details">文民職員<br>約3,300名<br>事務支援</div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection"><div class="v-line"></div></div>
+                    
+                    <div class="level level-committees">
+                        <div class="multi-column">
+                            <div class="org-box">
+                                <h3>常設代表委員会</h3>
+                                <div class="details">次席代表<br>政策調整</div>
+                            </div>
+                            <div class="org-box">
+                                <h3>防衛政策・計画委員会</h3>
+                                <div class="acronym">DPPC</div>
+                                <div class="details">集団防衛調整</div>
+                            </div>
+                            <div class="org-box">
+                                <h3>その他専門委員会</h3>
+                                <div class="details">政策分野別<br>200+委員会</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 軍事系統 -->
+                <div class="branch">
+                    <div class="level level-exec">
+                        <div class="org-box">
+                            <h3>軍事委員会委員長</h3>
+                            <div class="details">Giuseppe Cavo Dragone<br>(2025.1就任)<br>3年任期・非米国</div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection"><div class="v-line"></div></div>
+                    
+                    <div class="level level-support">
+                        <div class="org-box">
+                            <h3>国際軍事事務局</h3>
+                            <div class="acronym">IMS</div>
+                            <div class="details">軍事委員会執行機関<br>局長：3つ星将官</div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection"><div class="v-line"></div></div>
+                    
+                    <div class="level level-commands">
+                        <div class="org-box">
+                            <h3>連合軍作戦司令部</h3>
+                            <div class="acronym">ACO/SHAPE</div>
+                            <div class="details">ベルギー・モンス<br>SACEUR指揮<br>C.G.カヴォリ大将</div>
+                        </div>
+                        <div class="org-box">
+                            <h3>連合軍変革司令部</h3>
+                            <div class="acronym">ACT</div>
+                            <div class="details">米国・ノーフォーク<br>SACT指揮<br>能力開発・教義</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="connection"><div class="v-line"></div></div>
+            
+            <!-- Level 6: 専門機関 -->
+            <div class="level level-commands">
+                <div class="wide-multi-column">
+                    <div class="org-box">
+                        <h3>NSPA</h3>
+                        <div class="details">支援調達機関<br>ルクセンブルク</div>
+                    </div>
+                    <div class="org-box">
+                        <h3>NCI Agency</h3>
+                        <div class="details">通信情報機関<br>ブリュッセル</div>
+                    </div>
+                    <div class="org-box">
+                        <h3>STO</h3>
+                        <div class="details">科学技術機構</div>
+                    </div>
+                    <div class="org-box">
+                        <h3>DIANA</h3>
+                        <div class="details">防衛イノベーション<br>促進機構</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="consensus-box">
+            <h4>🤝 コンセンサス原則</h4>
+            <p><strong>全決定は全会一致・投票制度なし</strong></p>
+            <p>事務総長：NAC・NPG・各種委員会議長 | 軍事委員会：独立した委員長</p>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color member-color"></div>
+                <span>加盟国</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color councils-color"></div>
+                <span>理事会・委員会(同格)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color exec-color"></div>
+                <span>執行機関</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color support-color"></div>
+                <span>事務支援機関</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color committees-color"></div>
+                <span>下位委員会</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color commands-color"></div>
+                <span>司令部・専門機関</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
